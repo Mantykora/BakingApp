@@ -1,6 +1,7 @@
 package com.example.roza.bakingapp.Adapters;
 
 import android.app.Activity;
+import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.content.Context;
@@ -18,10 +19,12 @@ import com.example.roza.bakingapp.MainActivity;
 import com.example.roza.bakingapp.R;
 import android.app.Fragment;
 
+  import com.example.roza.bakingapp.RecipeStepsActivity;
 import com.example.roza.bakingapp.StepsFragment;
 import com.example.roza.bakingapp.models.Recipe;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -31,17 +34,12 @@ import java.util.List;
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
-    private List<Recipe> recipes;
-
-
-
+    private static ArrayList<Recipe> recipes;
 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recipe_list_item, parent, false);
-
-
 
 
         return new ViewHolder(view, new ViewHolder.ViewHolderClick() {
@@ -50,7 +48,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
                 Log.d("RecipeAdapter", "onclick");
             }
         });
-        }
+    }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
@@ -70,6 +68,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             return 0;
         }
     }
+
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public final TextView reciperNameTv;
@@ -86,26 +85,29 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
 
         // zrobic cos z tym contextem
         private Context context;
+
         @Override
         public void onClick(View view) {
             context = view.getContext();
             int position = (int) view.getTag();
             Toast.makeText(view.getContext(), Integer.toString(position), Toast.LENGTH_SHORT).show();
             mListener.onRecipeListItem(view);
-            //Intent intent = new Intent(itemView.getContext(), StepsFragment.class);
-            //itemView.getContext().startActivity(intent);
-
-            FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-            StepsFragment fragment = new StepsFragment();
-            fragmentTransaction.replace(R.id.fragment_name_list, fragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
-
-
-
+            Intent intent = new Intent(itemView.getContext(), RecipeStepsActivity.class);
+            //intent.putExtra("position", position);
+            Recipe recipe = recipes.get(position);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("recipe", recipe);
+            intent.putExtras(bundle);
+            itemView.getContext().startActivity(intent);
+//
+//            FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
+//
+//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+//
+//            StepsFragment fragment = new StepsFragment();
+//            fragmentTransaction.replace(R.id.fragment_name_list, fragment);
+//            fragmentTransaction.addToBackStack(null);
+//            fragmentTransaction.commit();
 
 
         }
@@ -120,12 +122,13 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     }
 
     public RecipeAdapter(List<Recipe> items) {
-        recipes = items;
+        recipes = (ArrayList<Recipe>) items;
     }
-
-
-
-
 }
+
+
+
+
+
 
 

@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hiddenpik on 05.05.2018.
@@ -37,7 +38,7 @@ public class JsonUtils {
         JSONArray resultsArray = new JSONArray(json);
 
         final ArrayList<Recipe> recipes = new ArrayList<>();
-        ArrayList<Recipe> ingredientsList = new ArrayList<>();
+
 
         for (int i = 0; i < resultsArray.length(); i++) {
 
@@ -52,44 +53,57 @@ public class JsonUtils {
             recipe.setRecipeName(recipeObject.getString(NAME));
             JSONArray ingredientsArray = recipeObject.getJSONArray(INGREDIENTS);
 
+
+            ArrayList<Recipe.Ingredients> ingredientsArrayList = new ArrayList<>();
+            Recipe.Ingredients ingredients = new Recipe.Ingredients();
+
             for (int j = 0; j < ingredientsArray.length(); j++ ) {
 
                 JSONObject ingredientObject = ingredientsArray.getJSONObject(j);
 
-                recipe.setIngredientQuantity(ingredientObject.getInt(QUANTITY));
-                recipe.setIgredientMeasure(ingredientObject.getString(MEASURE));
-                recipe.setIngredient(ingredientObject.getString(INGREDIENT));
+                ingredients.setIngredientQuantity(ingredientObject.getInt(QUANTITY));
+                ingredients.setIgredientMeasure(ingredientObject.getString(MEASURE));
+                ingredients.setIngredient(ingredientObject.getString(INGREDIENT));
+
+                ingredientsArrayList.add(ingredients);
 
 
 
-                Log.d("Json", "" + recipe.getIngredient());
+                Log.d("ingredients", ingredientsArrayList.toString());
 
 
             }
+            recipe.setIngredientsList(ingredientsArrayList);
+            Log.d("ingredients", ingredientsArrayList.toString());
 
 
+            ArrayList<Recipe.Steps> stepsArrayList = new ArrayList<>();
+            Recipe.Steps steps = new Recipe.Steps();
             JSONArray stepsArray = recipeObject.getJSONArray(STEPS);
 
             for (int k = 0; k < stepsArray.length(); k++) {
 
                 JSONObject stepObject = stepsArray.getJSONObject(k);
 
-                recipe.setStepId(stepObject.getInt(ID));
-                recipe.setStepShortDescription(stepObject.getString(SHORT_DESCRIPTION));
-                recipe.setStepDescription(stepObject.getString(DESCRIPTION));
-                recipe.setStepVideoUrl(stepObject.getString(VIDEO_URL));
-                recipe.setStepThumbnailUrl(stepObject.getString(THUMBNAIL_URL));
+                steps.setStepId(stepObject.getInt(ID));
+                steps.setStepShortDescription(stepObject.getString(SHORT_DESCRIPTION));
+                steps.setStepDescription(stepObject.getString(DESCRIPTION));
+                steps.setStepVideoUrl(stepObject.getString(VIDEO_URL));
+                steps.setStepThumbnailUrl(stepObject.getString(THUMBNAIL_URL));
+
+                stepsArrayList.add(steps);
 
 
             }
+            recipe.setStepsList(stepsArrayList);
 
             recipe.setRecipeServings(recipeObject.getInt(SERVINGS));
             recipe.setRecipeImage(recipeObject.getString(IMAGE));
 
             recipes.add(recipe);
             Log.d("Json", "" + recipe.getRecipeName());
-            Log.d("Json", "" + recipe.getStepVideoUrl());
-            Log.d("Json", "" + recipe.getIngredient());
+//            Log.d("Json", "" + recipe.getStepVideoUrl());
+//            Log.d("Json", "" + recipe.getIngredient());
             Log.d("json","" + recipes);
 
         }
