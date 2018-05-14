@@ -55,9 +55,10 @@ public class JsonUtils {
 
 
             ArrayList<Recipe.Ingredients> ingredientsArrayList = new ArrayList<>();
-            Recipe.Ingredients ingredients = new Recipe.Ingredients();
+
 
             for (int j = 0; j < ingredientsArray.length(); j++ ) {
+                Recipe.Ingredients ingredients = new Recipe.Ingredients();
 
                 JSONObject ingredientObject = ingredientsArray.getJSONObject(j);
 
@@ -71,18 +72,19 @@ public class JsonUtils {
 
                 Log.d("ingredients", ingredientsArrayList.toString());
 
-
             }
             recipe.setIngredientsList(ingredientsArrayList);
+
             Log.d("ingredients", ingredientsArrayList.toString());
 
 
             ArrayList<Recipe.Steps> stepsArrayList = new ArrayList<>();
-            Recipe.Steps steps = new Recipe.Steps();
+
             JSONArray stepsArray = recipeObject.getJSONArray(STEPS);
 
             for (int k = 0; k < stepsArray.length(); k++) {
 
+                Recipe.Steps steps = new Recipe.Steps();
                 JSONObject stepObject = stepsArray.getJSONObject(k);
 
                 steps.setStepId(stepObject.getInt(ID));

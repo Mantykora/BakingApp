@@ -61,7 +61,7 @@ public class Recipe implements Parcelable {
         this.recipeImage = recipeImage;
     }
 
-    public List<Ingredients> getIngredientsList() {
+    public ArrayList<Ingredients> getIngredientsList() {
         return ingredientsList;
     }
 

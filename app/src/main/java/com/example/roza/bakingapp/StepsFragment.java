@@ -44,8 +44,8 @@ public class StepsFragment extends Fragment {
         ButterKnife.bind(this, view);
 
        // int position = getArguments().getInt("position");
-        Recipe recipe = getArguments().getParcelable("recipe");
-        Log.d("StepsFragment", ""   + recipe.getRecipeName());
+        final Recipe recipe = getArguments().getParcelable("recipe");
+        Log.d("StepsFragment", ""   + (recipe != null ? recipe.getRecipeName() : null));
 
         steps = new ArrayList<>();
         steps =  recipe.getStepsList();
@@ -55,9 +55,13 @@ public class StepsFragment extends Fragment {
             public void onClick(View view) {
                 Log.d("Stes Fragment", "Click");
 
+                Bundle bundle = new Bundle();
+                bundle.putParcelable("recipe", recipe);
+
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                 IngredientsListFragment fragment = new IngredientsListFragment();
+                fragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.fragment_steps_list, fragment).addToBackStack(null);
                 fragmentTransaction.commit();
 
