@@ -91,6 +91,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             context = view.getContext();
             int position = (int) view.getTag();
             Toast.makeText(view.getContext(), Integer.toString(position), Toast.LENGTH_SHORT).show();
+
             mListener.onRecipeListItem(view);
             Intent intent = new Intent(itemView.getContext(), RecipeStepsActivity.class);
             //intent.putExtra("position", position);
