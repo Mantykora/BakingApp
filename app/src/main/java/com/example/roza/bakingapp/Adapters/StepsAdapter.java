@@ -43,7 +43,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
        holder.stepsTv.setTag(position);
         Recipe.Steps step = steps.get(position);
         int numberOfStep = position + 1;
-        holder.stepsTv.setText("Step " + numberOfStep);
+        holder.stepsTv.setText(step.getStepId() + ". " + step.getStepShortDescription());
 
    }
 
