@@ -2,6 +2,7 @@ package com.example.roza.bakingapp;
 
 import android.annotation.SuppressLint;
 import android.net.Uri;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -40,22 +41,27 @@ public class RecipeDetailFragment extends Fragment {
     private static final String KEY_POSITION = "position";
     private static final String KEY_AUTO_PLAY = "auto_play";
 
+
+
     private DefaultTrackSelector.Parameters trackSelectorParameters;
     private boolean startAutoPlay;
     private int startWindow;
     private long startPosition;
+    private DefaultTrackSelector trackSelector;
 
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//      //updateTrackSelectorParameters();
-//        //updateStartPosition();
-//       // outState.putParcelable(KEY_TRACK_SELECTOR_PARAMETERS, trackSelectorParameters);
-//        outState.putBoolean(KEY_AUTO_PLAY, startAutoPlay);
-//        outState.putInt(KEY_WINDOW, startWindow);
-//        outState.putLong(KEY_POSITION, startPosition);
-//        super.onSaveInstanceState(outState);
-//    }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        updateTrackSelectorParameters();
+       updateStartPosition();
+      // outState.putString(KEY_TRACK_SELECTOR_PARAMETERS, trackSelectorParameters.toString());
+      // outState.putParcelable(KEY_TRACK_SELECTOR_PARAMETERS, trackSelectorParameters);
+        outState.putBoolean(KEY_AUTO_PLAY, startAutoPlay);
+        outState.putInt(KEY_WINDOW, startWindow);
+        outState.putLong(KEY_POSITION, startPosition);
+        super.onSaveInstanceState(outState);
+    }
+
 
     @BindView(R.id.player_view)
     PlayerView playerView;
@@ -65,6 +71,8 @@ public class RecipeDetailFragment extends Fragment {
     private int currentWindow = 0;
     private long playbackPosition = 0;
     private Recipe.Steps step;
+    private String TAG = "RecipeDetailFragment.java";
+
 
 
 
@@ -78,16 +86,37 @@ public class RecipeDetailFragment extends Fragment {
 
         Log.d("RecipeDetailFragment", step.getStepDescription());
 
-
-
+       if (savedInstanceState != null) {
+           Log.d(TAG, "restoringInstanceState");
+           //trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
+           startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
+           startWindow = savedInstanceState.getInt(KEY_WINDOW);
+           startPosition = savedInstanceState.getLong(KEY_POSITION);
+//        } else {
+//          trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder().build();
+//          // clearStartPosition();
+//       }
+//
+       }
         return view;
     }
+
+//    @Override
+//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+//        super.onViewStateRestored(savedInstanceState);
+//        // trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
+//        startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
+//        startWindow = savedInstanceState.getInt(KEY_WINDOW);
+//        startPosition = savedInstanceState.getLong(KEY_POSITION);
+//    }
+
 
     @Override
     public void onStart() {
         super.onStart();
-        if (Util.SDK_INT > 23 || player == null) {
+        if (Util.SDK_INT > 23 ) {
             initializePlayer();
+            Log.d(TAG, "onStart" );
         }
     }
 
@@ -95,8 +124,9 @@ public class RecipeDetailFragment extends Fragment {
     public void onResume() {
         super.onResume();
         hideSystemUi();
-        if ((Util.SDK_INT <= 23 || player == null)) {
+        if (Util.SDK_INT <= 23) {
                 initializePlayer();
+                Log.d(TAG, "onResume");
         }
     }
 
@@ -105,6 +135,7 @@ public class RecipeDetailFragment extends Fragment {
         super.onPause();
         if (Util.SDK_INT <= 23) {
             releasePlayer();
+            Log.d(TAG, "onPause");
         }
     }
 
@@ -113,10 +144,14 @@ public class RecipeDetailFragment extends Fragment {
         super.onStop();
         if (Util.SDK_INT > 23) {
             releasePlayer();
+            Log.d(TAG, "onStop");
         }
 
 
+
     }
+
+
 
 
 
@@ -131,29 +166,35 @@ public class RecipeDetailFragment extends Fragment {
     }
 
     //ExoPlayer from https://codelabs.developers.google.com/codelabs/exoplayer-intro/#2
+    //https://github.com/google/ExoPlayer/tree/release-v2/demos/main
     public void initializePlayer() {
-        player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), new DefaultTrackSelector(), new DefaultLoadControl());
 
-        playerView.setPlayer(player);
+        if (player == null) {
+            trackSelector = new DefaultTrackSelector();
+            //trackSelector.setParameters(trackSelectorParameters);
+            player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), trackSelector, new DefaultLoadControl());
 
-        player.setPlayWhenReady(playWhenReady);
-        player.seekTo(currentWindow, playbackPosition);
+            playerView.setPlayer(player);
+
+            player.setPlayWhenReady(playWhenReady);
+            player.seekTo(currentWindow, playbackPosition);
 
 
-        Uri uri = Uri.parse(step.getStepVideoUrl());
-        MediaSource mediaSource = buildMediaSource(uri);
-        //player.prepare(mediaSource, true, false);
+            Uri uri = Uri.parse(step.getStepVideoUrl());
+            MediaSource mediaSource = buildMediaSource(uri);
+            player.prepare(mediaSource, true, false);
 
-        player.prepare(mediaSource, true, false);
 
+            Log.d(TAG, "player initialized");
+        }
 
     }
-//
-//    private void updateTrackSelectorParameters() {
-//        if (trackSelector != null) {
-//            trackSelectorParameters = trackSelector.getParameters();
-//        }
-//    }
+
+    private void updateTrackSelectorParameters() {
+        if (trackSelector != null) {
+           trackSelectorParameters = trackSelector.getParameters();
+       }
+    }
 
     private void updateStartPosition() {
         if (player != null) {
@@ -167,8 +208,10 @@ public class RecipeDetailFragment extends Fragment {
             playbackPosition = player.getCurrentPosition();
             currentWindow = player.getCurrentWindowIndex();
             playWhenReady = player.getPlayWhenReady();
+            player.stop(); 
             player.release();
-            //player = null;
+            player = null;
+            Log.d(TAG, "player released");
         }
     }
 

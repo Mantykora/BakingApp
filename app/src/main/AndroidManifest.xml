@@ -19,7 +19,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".RecipeStepsActivity"/>
-        <activity android:name=".RecipeDetailActivity"/>
+        <activity android:name=".RecipeDetailActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode">
+
+        </activity>
     </application>
 
 
