@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.roza.bakingapp.models.Recipe;
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -25,6 +26,8 @@ import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+
+import java.net.URL;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -66,6 +69,9 @@ public class RecipeDetailFragment extends Fragment {
     @BindView(R.id.player_view)
     PlayerView playerView;
 
+    @BindView(R.id.description_tv)
+    TextView descriptionTv;
+
     public ExoPlayer player;
     private boolean playWhenReady;
     private int currentWindow = 0;
@@ -98,6 +104,9 @@ public class RecipeDetailFragment extends Fragment {
 //       }
 //
        }
+
+       descriptionTv.setText(step.getStepDescription());
+
         return view;
     }
 
@@ -115,6 +124,7 @@ public class RecipeDetailFragment extends Fragment {
     public void onStart() {
         super.onStart();
         if (Util.SDK_INT > 23 ) {
+
             initializePlayer();
             Log.d(TAG, "onStart" );
         }
@@ -170,6 +180,9 @@ public class RecipeDetailFragment extends Fragment {
     public void initializePlayer() {
 
         if (player == null) {
+
+
+
             trackSelector = new DefaultTrackSelector();
             //trackSelector.setParameters(trackSelectorParameters);
             player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), trackSelector, new DefaultLoadControl());
@@ -180,12 +193,18 @@ public class RecipeDetailFragment extends Fragment {
             player.seekTo(currentWindow, playbackPosition);
 
 
+            String stepUrl = step.getStepVideoUrl();
+            if (!stepUrl.isEmpty()) {
             Uri uri = Uri.parse(step.getStepVideoUrl());
             MediaSource mediaSource = buildMediaSource(uri);
             player.prepare(mediaSource, true, false);
 
 
             Log.d(TAG, "player initialized");
+        }
+        else {
+                playerView.setVisibility(View.GONE);
+            }
         }
 
     }
@@ -208,7 +227,7 @@ public class RecipeDetailFragment extends Fragment {
             playbackPosition = player.getCurrentPosition();
             currentWindow = player.getCurrentWindowIndex();
             playWhenReady = player.getPlayWhenReady();
-            player.stop(); 
+            player.stop();
             player.release();
             player = null;
             Log.d(TAG, "player released");
