@@ -3,6 +3,7 @@
     package="com.example.roza.bakingapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
 
     <application
         android:allowBackup="true"
@@ -31,6 +32,7 @@
         <receiver android:name=".BakingWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.wordpress.laaptu.DATA_FETCHED" />
             </intent-filter>
 
             <meta-data

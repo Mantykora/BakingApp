@@ -12,9 +12,11 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RemoteViews;
 
 import com.example.roza.bakingapp.Adapters.ConfigureAdapter;
 import com.example.roza.bakingapp.models.Recipe;
@@ -45,6 +47,8 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
 
     @BindView(R.id.configure_widget_lv)
     ListView configureListView;
+    ArrayList<Recipe> parsedList;
+    Recipe recipe;
 
 
     //ArrayAdapter<>
@@ -68,9 +72,26 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
                     AppWidgetManager.EXTRA_APPWIDGET_ID,
                     AppWidgetManager.INVALID_APPWIDGET_ID);
 
+
             // nutellaButton.setOnClickListener(this);
 
         }
+
+
+        configureListView.setClickable(true);
+        configureListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                Context context = ConfigurationActivity.this;
+                recipe = parsedList.get(position);
+                Log.d("configurationActivity","" + recipe);
+
+
+                startWidget();
+
+            }
+        });
 
 
     }
@@ -82,14 +103,40 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
 
 
     private void startWidget() {
+        Context context = getApplicationContext();
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+        RemoteViews views = new RemoteViews(context.getPackageName(),
+                R.layout.baking_widget);
+        Intent serviceIntent = new Intent(this, BakingRemoteViewService.class);
+//        Bundle bundle = new Bundle();
+//        bundle.setClassLoader(this.getClassLoader());
+//        bundle.putParcelableArrayList("ingredients", recipe.getIngredientsList());
+//        serviceIntent.putExtras(bundle);
+
+        Bundle b = new Bundle();
+        b.putParcelableArrayList("ingredientsParcel", recipe.getIngredientsList());
+        serviceIntent.putExtra("b", b);
+
+
+        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
+        views.setRemoteAdapter(R.id.widget_ingredients_lv, serviceIntent);
+        appWidgetManager.updateAppWidget(appWidgetId, views);
+
+//        Bundle b = new Bundle();
+//        b.putParcelable("recipe", recipe);
+
         Intent intent = new Intent();
+//        intent.setExtrasClassLoader(Recipe.class.getClassLoader());
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 appWidgetId);
+//        Log.d("starting","" + recipe);
+        //intent.putExtra("recipeParcel", recipe);
         setResult(Activity.RESULT_OK, intent);
 
-        Intent serviceIntent = new Intent(this, BakingRemoteViewService.class);
-        serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
-        startService(serviceIntent);
+
+//
+//        startService(serviceIntent);
 
         this.finish();
     }
@@ -100,7 +147,7 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
 
         return new AsyncTaskLoader<ArrayList<Recipe>>(context) {
 
-            ArrayList<Recipe> parsedList;
+
 
             @Override
             public ArrayList<Recipe> loadInBackground() {

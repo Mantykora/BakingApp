@@ -3,6 +3,7 @@ package com.example.roza.bakingapp;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -11,6 +12,7 @@ import com.example.roza.bakingapp.models.Recipe;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by hiddenpik on 21.05.2018.
@@ -18,18 +20,29 @@ import java.util.ArrayList;
 
 public class BakingRemoteViewService extends RemoteViewsService {
 
+  //  private static ArrayList<Recipe> recipes;
+
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
-        return new ListViewFactory(this.getApplicationContext());
+        return new ListViewFactory(this.getApplicationContext(), intent);
     }
 
     class ListViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
         private Context context;
+        private Intent intent;
         private ArrayList<Recipe.Ingredients> ingredients;
 
-        public ListViewFactory(Context applicationContext) {
+        public ListViewFactory(Context applicationContext, Intent intent) {
             context = applicationContext;
+            this.intent = intent;
+
+            Bundle b = intent.getParcelableExtra("b");
+            ingredients = b.getParcelableArrayList("ingredientsParcel");
+
+//            ingredients = intent.getParcelableArrayListExtra("ingredients");
+
+
         }
 
         @Override
@@ -58,12 +71,27 @@ public class BakingRemoteViewService extends RemoteViewsService {
 
         @Override
         public int getCount() {
-            return 0;
+            if (ingredients != null && !ingredients.isEmpty()) {
+                return ingredients.size();
+            } else {
+                return 0;
+            }
         }
 
         @Override
-        public RemoteViews getViewAt(int i) {
-            return null;
+        public RemoteViews getViewAt(int position) {
+
+
+
+           Recipe.Ingredients ingredient = ingredients.get(position);
+
+           RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_item);
+           rv.setTextViewText(R.id.ingredient_widget_tv, ingredient.getIngredient());
+           rv.setTextViewText(R.id.quantity_measure_tv, String.valueOf(ingredient.getIngredientQuantity()));
+           rv.setTextViewText(R.id.measure_widget_tv, ingredient.getIgredientMeasure());
+
+           return rv;
+
         }
 
         @Override
@@ -73,7 +101,7 @@ public class BakingRemoteViewService extends RemoteViewsService {
 
         @Override
         public int getViewTypeCount() {
-            return 0;
+            return 1;
         }
 
         @Override
