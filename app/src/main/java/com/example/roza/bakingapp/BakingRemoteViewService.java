@@ -53,13 +53,6 @@ public class BakingRemoteViewService extends RemoteViewsService {
         @Override
         public void onDataSetChanged() {
 
-//            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//            String json = preferences.getString("shared_preff", "");
-//            if (!json.equals("")) {
-//                Gson gson = new Gson();
-//                ingredients = gson.fromJson(json, )
-//            }
-
 
 
         }

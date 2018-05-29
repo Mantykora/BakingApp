@@ -40,10 +40,6 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
 
 
     private int appWidgetId;
-//    @BindView(R.id.nutella_button) Button nutellaButton;
-//    @BindView(R.id.brownies_button) Button browniesButton;
-//    @BindView(R.id.yellow_button) Button yellowButton;
-//    @BindView(R.id.cheesecake_button) Button cheesecakeButton;
 
     @BindView(R.id.configure_widget_lv)
     ListView configureListView;

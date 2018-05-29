@@ -9,6 +9,7 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.app.LoaderManager.LoaderCallbacks;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -51,9 +52,21 @@ public class RecipesListFragment extends Fragment implements LoaderManager.Loade
         View view = inflater.inflate(R.layout.fragment_recipes, container, false);
         ButterKnife.bind(this, view);
 
-        layoutManager = new LinearLayoutManager(getActivity());
-        namesRecycleView.setLayoutManager(layoutManager);
 
+
+
+
+
+      if (view.findViewById(R.id.tablet_activity_main) != null) {
+
+          layoutManager = new GridLayoutManager(getActivity(), 5);
+
+
+      } else {
+          layoutManager = new LinearLayoutManager(getActivity());
+          namesRecycleView.setLayoutManager(layoutManager);
+
+      }
         recipesList = new ArrayList<>();
         adapter = new RecipeAdapter(recipesList);
 
