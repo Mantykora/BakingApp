@@ -57,16 +57,17 @@ public class RecipesListFragment extends Fragment implements LoaderManager.Loade
 
 
 
-      if (view.findViewById(R.id.tablet_activity_main) != null) {
+      if (view.findViewById(R.id.tablet_fragment_recipes) != null) {
 
           layoutManager = new GridLayoutManager(getActivity(), 5);
 
 
       } else {
           layoutManager = new LinearLayoutManager(getActivity());
-          namesRecycleView.setLayoutManager(layoutManager);
+
 
       }
+        namesRecycleView.setLayoutManager(layoutManager);
         recipesList = new ArrayList<>();
         adapter = new RecipeAdapter(recipesList);
 

@@ -35,6 +35,7 @@ public class StepsFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private RecyclerView.Adapter adapter;
     private ArrayList<Recipe.Steps> steps;
+    private boolean isTablet;
 
     @Nullable
     @Override
@@ -50,6 +51,12 @@ public class StepsFragment extends Fragment {
         steps = new ArrayList<>();
         steps =  recipe.getStepsList();
 
+
+
+        if (view.findViewById(R.id.tablet_fragment_steps) != null) {
+            isTablet = true;
+        }
+
         ingredientsTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -58,12 +65,25 @@ public class StepsFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putParcelable("recipe", recipe);
 
+
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+
+                if (isTablet) {
+
+                    IngredientsListFragment fragment = new IngredientsListFragment();
+                    fragment.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.recipe_detail, fragment).addToBackStack(null);
+                    fragmentTransaction.commit();
+                    Log.d("StepsFragment", "wywolane");
+
+
+                } else  {
+
                 IngredientsListFragment fragment = new IngredientsListFragment();
                 fragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.fragment_steps_list, fragment).addToBackStack(null);
-                fragmentTransaction.commit();
+                fragmentTransaction.commit();   }
 
 
             }
@@ -76,7 +96,7 @@ public class StepsFragment extends Fragment {
 
 
 
-       adapter = new StepsAdapter(steps);
+       adapter = new StepsAdapter(getContext(), steps);
        stepsRecycleView.setAdapter(adapter);
        adapter.notifyDataSetChanged();
 

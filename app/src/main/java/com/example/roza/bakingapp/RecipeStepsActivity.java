@@ -22,7 +22,17 @@ public class RecipeStepsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
 
-        //getting click position from RecipeListFragment
+        if (findViewById(R.id.tablet_fragment_recipes) != null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            RecipeDetailFragment fragment = new RecipeDetailFragment();
+           // fragment.setArguments(bundle);
+            fragmentTransaction.add(R.id.recipe_detail, fragment);
+            fragmentTransaction.commit();
+        }
+
+
+            //getting click position from RecipeListFragment
         Intent mIntent = getIntent();
         int position = mIntent.getIntExtra("position", 0);
 

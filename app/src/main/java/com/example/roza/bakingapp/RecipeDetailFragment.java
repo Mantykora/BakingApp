@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -203,7 +204,9 @@ public class RecipeDetailFragment extends Fragment {
             Log.d(TAG, "player initialized");
         }
         else {
+
                 playerView.setVisibility(View.GONE);
+
             }
         }
 
