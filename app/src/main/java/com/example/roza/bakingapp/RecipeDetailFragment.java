@@ -7,11 +7,15 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.roza.bakingapp.models.Recipe;
@@ -29,6 +33,7 @@ import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
 import java.net.URL;
+import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -73,6 +78,12 @@ public class RecipeDetailFragment extends Fragment {
     @BindView(R.id.description_tv)
     TextView descriptionTv;
 
+    @BindView(R.id.button_previous_fragment)
+    Button previousButton;
+
+    @BindView(R.id.button_next_fragment)
+    Button nextButton;
+
     public ExoPlayer player;
     private boolean playWhenReady;
     private int currentWindow = 0;
@@ -80,6 +91,8 @@ public class RecipeDetailFragment extends Fragment {
     private Recipe.Steps step;
     private String TAG = "RecipeDetailFragment.java";
 
+    private ArrayList<Recipe.Steps> steps;
+    private int position;
 
 
 
@@ -89,7 +102,11 @@ public class RecipeDetailFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
         ButterKnife.bind(this, view);
-        step = getArguments().getParcelable("step");
+       // step = getArguments().getParcelable("step");
+        steps = getArguments().getParcelableArrayList("stepsList");
+        position = getArguments().getInt("position");
+
+        step = steps.get(position);
 
         Log.d("RecipeDetailFragment", step.getStepDescription());
 
@@ -108,6 +125,52 @@ public class RecipeDetailFragment extends Fragment {
 
        descriptionTv.setText(step.getStepDescription());
 
+       previousButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               if (position > 0) {
+                   position -= 1;
+                   step = steps.get(position);
+
+                   Bundle bundle = new Bundle();
+                   bundle.putParcelableArrayList("stepsList", steps);
+                   bundle.putInt("position", position);
+
+
+                   FragmentManager fragmentManager = getFragmentManager();
+                   FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                   RecipeDetailFragment fragment = new RecipeDetailFragment();
+                   fragment.setArguments(bundle);
+                   fragmentTransaction.replace(R.id.recipe_detail, fragment);
+                   fragmentTransaction.commit();
+
+               }
+
+           }
+       });
+
+       nextButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               if (position < steps.size() -1) {
+               position += 1;
+               step = steps.get(position);
+
+               Bundle bundle = new Bundle();
+               bundle.putParcelableArrayList("stepsList", steps);
+               bundle.putInt("position", position);
+
+
+                   FragmentManager fragmentManager = getFragmentManager();
+                   FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                   RecipeDetailFragment fragment = new RecipeDetailFragment();
+                   fragment.setArguments(bundle);
+                   fragmentTransaction.replace(R.id.recipe_detail, fragment);
+                   fragmentTransaction.commit();
+
+               }
+           }
+       });
         return view;
     }
 
@@ -206,6 +269,7 @@ public class RecipeDetailFragment extends Fragment {
         else {
 
                 playerView.setVisibility(View.GONE);
+                ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
 
             }
         }

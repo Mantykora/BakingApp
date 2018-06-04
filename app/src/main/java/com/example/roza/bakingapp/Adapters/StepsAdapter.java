@@ -101,12 +101,14 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
            Intent intent = new Intent(itemView.getContext(), RecipeDetailActivity.class);
 
            Recipe.Steps step = steps.get(position);
-
+           Bundle bundle = new Bundle();
+           bundle.putParcelable("step", step);
+           bundle.putInt("position", position);
+           bundle.putParcelableArrayList("stepsList", steps);
 
 
            if (isTablet) {
-               Bundle bundle = new Bundle();
-               bundle.putParcelable("step", step);
+
                FragmentManager fragmentManager = ((RecipeStepsActivity)context).getSupportFragmentManager();
                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                RecipeDetailFragment fragment = new RecipeDetailFragment();
@@ -119,8 +121,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
            } else {
 
 
-               Bundle bundle = new Bundle();
-               bundle.putParcelable("step", step);
+
                intent.putExtras(bundle);
 
                itemView.getContext().startActivity(intent);

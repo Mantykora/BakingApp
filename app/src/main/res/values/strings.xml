@@ -8,4 +8,9 @@
     <string name="brownies">Brownies</string>
     <string name="yellow_cake">Yellow Cake</string>
     <string name="cheesecake">Cheesecake</string>
+    <string name="apple_pie">Apple pie</string>
+    <string name="previous_step">previous step</string>
+    <string name="next_step">next step</string>
+    <string name="previous_recipe">previous recipe</string>
+    <string name="next_recipe">next recipe</string>
 </resources>

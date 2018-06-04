@@ -10,6 +10,8 @@ import android.util.Log;
 
 import com.example.roza.bakingapp.models.Recipe;
 
+import java.util.ArrayList;
+
 /**
  * Created by hiddenpik on 15.05.2018.
  */
@@ -21,10 +23,14 @@ public class RecipeDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
         Recipe.Steps step = getIntent().getParcelableExtra("step");
+        int position = getIntent().getIntExtra("position", 0);
+        ArrayList<Recipe.Steps> steps = getIntent().getParcelableArrayListExtra("stepsList");
 
         Bundle bundle = new Bundle();
 
         bundle.putParcelable("step", step);
+        bundle.putInt("position", position);
+        bundle.putParcelableArrayList("stepsList", steps);
 
         Log.d("RecipeDetailActivity", "" + step.getStepDescription());
 

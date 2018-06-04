@@ -35,8 +35,7 @@ public class RecipeStepsActivity extends AppCompatActivity {
             //getting click position from RecipeListFragment
         Intent mIntent = getIntent();
         int position = mIntent.getIntExtra("position", 0);
-
-
+        ArrayList<Recipe> recipes = getIntent().getParcelableArrayListExtra("recipesList");
 
         //ArrayList<Recipe> recipes = mIntent.getParcelableArrayListExtra("arrayList");
 
@@ -46,6 +45,8 @@ public class RecipeStepsActivity extends AppCompatActivity {
         Bundle bundle = new Bundle();
        // bundle.putInt("position", position);
         bundle.putParcelable("recipe", recipe);
+        bundle.putInt("position", position);
+        bundle.putParcelableArrayList("recipesList", recipes);
 
         Log.d("RecipeStepsActivity", "" + recipe.getRecipeName());
 
