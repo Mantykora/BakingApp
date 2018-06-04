@@ -56,16 +56,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         holder.reciperNameTv.setTag(position);
-        holder.reciperNameIv.setTag(position);
+       // holder.reciperNameIv.setTag(position);
 
         Recipe recipe = recipes.get(position);
 
         holder.reciperNameTv.setText(recipe.getRecipeName());
-
-        if (!recipe.getRecipeImage().isEmpty()) {
-            Picasso.get().load(recipe.getRecipeImage()).into(holder.reciperNameIv);
-
-        }
+//
+//        if (!recipe.getRecipeImage().isEmpty()) {
+//            Picasso.get().load(recipe.getRecipeImage()).into(holder.reciperNameIv);
+//
+//        }
 
 
     }
@@ -82,7 +82,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public final TextView reciperNameTv;
-        public final ImageView reciperNameIv;
+       // public final ImageView reciperNameIv;
         public ViewHolder.ViewHolderClick mListener;
 
         public ViewHolder(View itemView, ViewHolderClick viewHolderClick) {
@@ -93,7 +93,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             reciperNameTv = itemView.findViewById(R.id.recipe_name_textView);
             reciperNameTv.setOnClickListener(this);
 
-            reciperNameIv = itemView.findViewById(R.id.recipe_name_imageView);
+           // reciperNameIv = itemView.findViewById(R.id.recipe_name_imageView);
         }
 
         // zrobic cos z tym contextem
@@ -103,7 +103,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         public void onClick(View view) {
             context = view.getContext();
             int position = (int) view.getTag();
-            Toast.makeText(view.getContext(), Integer.toString(position), Toast.LENGTH_SHORT).show();
+
 
             mListener.onRecipeListItem(view);
             Intent intent = new Intent(itemView.getContext(), RecipeStepsActivity.class);

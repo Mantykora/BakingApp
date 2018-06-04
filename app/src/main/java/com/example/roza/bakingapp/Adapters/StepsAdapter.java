@@ -94,8 +94,6 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
 
 
            int position = (int) view.getTag();
-           Toast.makeText(view.getContext(), Integer.toString(position), Toast.LENGTH_SHORT).show();
-
            mListener.onStepListItem(view);
 
            Intent intent = new Intent(itemView.getContext(), RecipeDetailActivity.class);

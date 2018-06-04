@@ -24,21 +24,26 @@
         tools:text="description" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:orientation="horizontal">
 
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/button_previous_fragment"
-            android:text="@string/previous_step"/>
-        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:text="@string/previous_step"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_weight="1"/>
+
+        <Button
             android:id="@+id/button_next_fragment"
-            android:text="@string/next_step"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next_step"
+            style="@style/Widget.AppCompat.Button.Borderless.Colored"
+            android:layout_weight="1"/>
 
     </LinearLayout>
 

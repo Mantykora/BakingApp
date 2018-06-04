@@ -6,7 +6,7 @@
 
     <fragment
         android:name="com.example.roza.bakingapp.RecipesListFragment"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/fragment_name_list"/>
 

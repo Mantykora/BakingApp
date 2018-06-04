@@ -13,4 +13,5 @@
     <string name="next_step">next step</string>
     <string name="previous_recipe">previous recipe</string>
     <string name="next_recipe">next recipe</string>
+    <string name="step_item_text">0. Recipe introduction</string>
 </resources>

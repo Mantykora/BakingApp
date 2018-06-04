@@ -70,9 +70,10 @@ public class MainActivity extends AppCompatActivity //implements LoaderCallbacks
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         RecipesListFragment fragment = new RecipesListFragment();
+        if (fragment == null) {
         fragmentTransaction.add(R.id.fragment_name_list, fragment);
         fragmentTransaction.commit();
-}
+}}
 }
 //                ButterKnife.bind(this);
 //

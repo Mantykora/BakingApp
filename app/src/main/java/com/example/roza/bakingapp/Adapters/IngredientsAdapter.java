@@ -50,8 +50,8 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
         Recipe.Ingredients ingredient = ingredients.get(position);
 
-        holder.quantityTv.setText(String.valueOf(ingredient.getIngredientQuantity()));
-        holder.measureTv.setText(String.valueOf(ingredient.getIgredientMeasure()));
+        holder.quantityTv.setText(String.valueOf(ingredient.getIngredientQuantity() + " "));
+        holder.measureTv.setText(String.valueOf(ingredient.getIgredientMeasure() + " "));
         holder.ingredientTv.setText(String.valueOf(ingredient.getIngredient()));
 
     }

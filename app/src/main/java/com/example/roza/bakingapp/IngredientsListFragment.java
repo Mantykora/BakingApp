@@ -1,6 +1,8 @@
 package com.example.roza.bakingapp;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -8,6 +10,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import com.example.roza.bakingapp.Adapters.IngredientsAdapter;
   import com.example.roza.bakingapp.models.Recipe;
@@ -39,6 +43,7 @@ public class IngredientsListFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_ingredients, container, false);
 
         ButterKnife.bind(this, view);
+
         final Recipe recipe = getArguments().getParcelable("recipe");
 
         ingredients = new ArrayList<>();
