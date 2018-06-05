@@ -14,13 +14,9 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by hiddenpik on 21.05.2018.
- */
 
 public class BakingRemoteViewService extends RemoteViewsService {
 
-  //  private static ArrayList<Recipe> recipes;
 
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
@@ -40,8 +36,6 @@ public class BakingRemoteViewService extends RemoteViewsService {
             Bundle b = intent.getParcelableExtra("b");
             ingredients = b.getParcelableArrayList("ingredientsParcel");
 
-//            ingredients = intent.getParcelableArrayListExtra("ingredients");
-
 
         }
 
@@ -52,7 +46,6 @@ public class BakingRemoteViewService extends RemoteViewsService {
 
         @Override
         public void onDataSetChanged() {
-
 
 
         }
@@ -75,15 +68,14 @@ public class BakingRemoteViewService extends RemoteViewsService {
         public RemoteViews getViewAt(int position) {
 
 
+            Recipe.Ingredients ingredient = ingredients.get(position);
 
-           Recipe.Ingredients ingredient = ingredients.get(position);
+            RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_item);
+            rv.setTextViewText(R.id.ingredient_widget_tv, ingredient.getIngredient());
+            rv.setTextViewText(R.id.quantity_measure_tv, String.valueOf(ingredient.getIngredientQuantity()));
+            rv.setTextViewText(R.id.measure_widget_tv, ingredient.getIgredientMeasure());
 
-           RemoteViews rv = new RemoteViews(context.getPackageName(), R.layout.widget_item);
-           rv.setTextViewText(R.id.ingredient_widget_tv, ingredient.getIngredient());
-           rv.setTextViewText(R.id.quantity_measure_tv, String.valueOf(ingredient.getIngredientQuantity()));
-           rv.setTextViewText(R.id.measure_widget_tv, ingredient.getIgredientMeasure());
-
-           return rv;
+            return rv;
 
         }
 
@@ -106,7 +98,6 @@ public class BakingRemoteViewService extends RemoteViewsService {
         public boolean hasStableIds() {
             return false;
         }
-
 
 
     }

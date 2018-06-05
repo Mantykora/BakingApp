@@ -45,11 +45,9 @@ import butterknife.ButterKnife;
 public class RecipeDetailFragment extends Fragment {
 
     // Saved instance state keys.
-    private static final String KEY_TRACK_SELECTOR_PARAMETERS = "track_selector_parameters";
     private static final String KEY_WINDOW = "window";
     private static final String KEY_POSITION = "position";
     private static final String KEY_AUTO_PLAY = "auto_play";
-
 
 
     private DefaultTrackSelector.Parameters trackSelectorParameters;
@@ -62,9 +60,7 @@ public class RecipeDetailFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         updateTrackSelectorParameters();
-       updateStartPosition();
-      // outState.putString(KEY_TRACK_SELECTOR_PARAMETERS, trackSelectorParameters.toString());
-      // outState.putParcelable(KEY_TRACK_SELECTOR_PARAMETERS, trackSelectorParameters);
+        updateStartPosition();
         outState.putBoolean(KEY_AUTO_PLAY, startAutoPlay);
         outState.putInt(KEY_WINDOW, startWindow);
         outState.putLong(KEY_POSITION, startPosition);
@@ -95,14 +91,13 @@ public class RecipeDetailFragment extends Fragment {
     private int position;
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail, container, false);
 
         ButterKnife.bind(this, view);
-       // step = getArguments().getParcelable("step");
+
         steps = getArguments().getParcelableArrayList("stepsList");
         position = getArguments().getInt("position");
 
@@ -110,87 +105,73 @@ public class RecipeDetailFragment extends Fragment {
 
         Log.d("RecipeDetailFragment", step.getStepDescription());
 
-       if (savedInstanceState != null) {
-           Log.d(TAG, "restoringInstanceState");
-           //trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
-           startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
-           startWindow = savedInstanceState.getInt(KEY_WINDOW);
-           startPosition = savedInstanceState.getLong(KEY_POSITION);
-//        } else {
-//          trackSelectorParameters = new DefaultTrackSelector.ParametersBuilder().build();
-//          // clearStartPosition();
-//       }
-//
-       }
+        if (savedInstanceState != null) {
+            Log.d(TAG, "restoringInstanceState");
+            startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
+            startWindow = savedInstanceState.getInt(KEY_WINDOW);
+            startPosition = savedInstanceState.getLong(KEY_POSITION);
 
-       descriptionTv.setText(step.getStepDescription());
+        }
 
-       previousButton.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               if (position > 0) {
-                   position -= 1;
-                   step = steps.get(position);
+        descriptionTv.setText(step.getStepDescription());
 
-                   Bundle bundle = new Bundle();
-                   bundle.putParcelableArrayList("stepsList", steps);
-                   bundle.putInt("position", position);
+        previousButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (position > 0) {
+                    position -= 1;
+                    step = steps.get(position);
+
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("stepsList", steps);
+                    bundle.putInt("position", position);
 
 
-                   FragmentManager fragmentManager = getFragmentManager();
-                   FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                   RecipeDetailFragment fragment = new RecipeDetailFragment();
-                   fragment.setArguments(bundle);
-                   fragmentTransaction.replace(R.id.recipe_detail, fragment);
-                   fragmentTransaction.commit();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    RecipeDetailFragment fragment = new RecipeDetailFragment();
+                    fragment.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.recipe_detail, fragment);
+                    fragmentTransaction.commit();
 
-               }
+                }
 
-           }
-       });
+            }
+        });
 
-       nextButton.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View view) {
-               if (position < steps.size() -1) {
-               position += 1;
-               step = steps.get(position);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (position < steps.size() - 1) {
+                    position += 1;
+                    step = steps.get(position);
 
-               Bundle bundle = new Bundle();
-               bundle.putParcelableArrayList("stepsList", steps);
-               bundle.putInt("position", position);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("stepsList", steps);
+                    bundle.putInt("position", position);
 
 
-                   FragmentManager fragmentManager = getFragmentManager();
-                   FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                   RecipeDetailFragment fragment = new RecipeDetailFragment();
-                   fragment.setArguments(bundle);
-                   fragmentTransaction.replace(R.id.recipe_detail, fragment);
-                   fragmentTransaction.commit();
+                    FragmentManager fragmentManager = getFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    RecipeDetailFragment fragment = new RecipeDetailFragment();
+                    fragment.setArguments(bundle);
+                    fragmentTransaction.replace(R.id.recipe_detail, fragment);
+                    fragmentTransaction.commit();
 
-               }
-           }
-       });
+                }
+            }
+        });
         return view;
     }
-
-//    @Override
-//    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
-//        super.onViewStateRestored(savedInstanceState);
-//        // trackSelectorParameters = savedInstanceState.getParcelable(KEY_TRACK_SELECTOR_PARAMETERS);
-//        startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
-//        startWindow = savedInstanceState.getInt(KEY_WINDOW);
-//        startPosition = savedInstanceState.getLong(KEY_POSITION);
-//    }
 
 
     @Override
     public void onStart() {
         super.onStart();
-        if (Util.SDK_INT > 23 ) {
+        if (Util.SDK_INT > 23) {
 
             initializePlayer();
-            Log.d(TAG, "onStart" );
+            Log.d(TAG, "onStart");
         }
     }
 
@@ -199,8 +180,8 @@ public class RecipeDetailFragment extends Fragment {
         super.onResume();
         hideSystemUi();
         if (Util.SDK_INT <= 23) {
-                initializePlayer();
-                Log.d(TAG, "onResume");
+            initializePlayer();
+            Log.d(TAG, "onResume");
         }
     }
 
@@ -222,11 +203,7 @@ public class RecipeDetailFragment extends Fragment {
         }
 
 
-
     }
-
-
-
 
 
     @SuppressLint("InlinedApi")
@@ -246,7 +223,6 @@ public class RecipeDetailFragment extends Fragment {
         if (player == null) {
 
 
-
             trackSelector = new DefaultTrackSelector();
             //trackSelector.setParameters(trackSelectorParameters);
             player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), trackSelector, new DefaultLoadControl());
@@ -259,17 +235,16 @@ public class RecipeDetailFragment extends Fragment {
 
             String stepUrl = step.getStepVideoUrl();
             if (!stepUrl.isEmpty()) {
-            Uri uri = Uri.parse(step.getStepVideoUrl());
-            MediaSource mediaSource = buildMediaSource(uri);
-            player.prepare(mediaSource, true, false);
+                Uri uri = Uri.parse(step.getStepVideoUrl());
+                MediaSource mediaSource = buildMediaSource(uri);
+                player.prepare(mediaSource, true, false);
 
 
-            Log.d(TAG, "player initialized");
-        }
-        else {
+                Log.d(TAG, "player initialized");
+            } else {
 
                 playerView.setVisibility(View.GONE);
-                ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
+                ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
             }
         }
@@ -278,8 +253,8 @@ public class RecipeDetailFragment extends Fragment {
 
     private void updateTrackSelectorParameters() {
         if (trackSelector != null) {
-           trackSelectorParameters = trackSelector.getParameters();
-       }
+            trackSelectorParameters = trackSelector.getParameters();
+        }
     }
 
     private void updateStartPosition() {
@@ -289,6 +264,7 @@ public class RecipeDetailFragment extends Fragment {
             startPosition = Math.max(0, player.getContentPosition());
         }
     }
+
     private void releasePlayer() {
         if (player != null) {
             playbackPosition = player.getCurrentPosition();

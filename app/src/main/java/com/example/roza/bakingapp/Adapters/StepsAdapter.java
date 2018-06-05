@@ -16,15 +16,13 @@ import com.example.roza.bakingapp.RecipeDetailActivity;
 import com.example.roza.bakingapp.RecipeDetailFragment;
 import com.example.roza.bakingapp.RecipeStepsActivity;
 import com.example.roza.bakingapp.models.Recipe;
+
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by hiddenpik on 13.05.2018.
- */
 
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
 
@@ -35,45 +33,44 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-       View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.steps_list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.steps_list_item, parent, false);
 
 
-       if (view.findViewById(R.id.tablet_steps_list_item) != null) {
+        if (view.findViewById(R.id.tablet_steps_list_item) != null) {
 
-           isTablet = true;
-       }
+            isTablet = true;
+        }
 
-       return new ViewHolder(view, new ViewHolder.ViewHolderClick() {
-           public void onStepListItem(View view) {
+        return new ViewHolder(view, new ViewHolder.ViewHolderClick() {
+            public void onStepListItem(View view) {
 
-               Log.d("StepeAdapter", "onclick");
-           }
-       });
+                Log.d("StepeAdapter", "onclick");
+            }
+        });
 
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
 
-       holder.stepsTv.setTag(position);
+        holder.stepsTv.setTag(position);
         Recipe.Steps step = steps.get(position);
-        int numberOfStep = position + 1;
         holder.stepsTv.setText(step.getStepId() + ". " + step.getStepShortDescription());
 
-   }
+    }
 
     @Override
-   public int getItemCount() {
-       if (steps != null && !steps.isEmpty()) {
-           return steps.size();
-       } else {
-       return 0;
-   }
-   }
+    public int getItemCount() {
+        if (steps != null && !steps.isEmpty()) {
+            return steps.size();
+        } else {
+            return 0;
+        }
+    }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-       public final TextView stepsTv;
+        public final TextView stepsTv;
         public ViewHolder.ViewHolderClick mListener;
 
         public ViewHolder(View itemView, ViewHolderClick viewHolderClick) {
@@ -85,58 +82,54 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
             stepsTv.setOnClickListener(this);
 
 
-       }
+        }
 
-       @Override
-       public void onClick(View view) {
-
-
+        @Override
+        public void onClick(View view) {
 
 
-           int position = (int) view.getTag();
-           mListener.onStepListItem(view);
+            int position = (int) view.getTag();
+            mListener.onStepListItem(view);
 
-           Intent intent = new Intent(itemView.getContext(), RecipeDetailActivity.class);
+            Intent intent = new Intent(itemView.getContext(), RecipeDetailActivity.class);
 
-           Recipe.Steps step = steps.get(position);
-           Bundle bundle = new Bundle();
-           bundle.putParcelable("step", step);
-           bundle.putInt("position", position);
-           bundle.putParcelableArrayList("stepsList", steps);
-
-
-           if (isTablet) {
-
-               FragmentManager fragmentManager = ((RecipeStepsActivity)context).getSupportFragmentManager();
-               FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-               RecipeDetailFragment fragment = new RecipeDetailFragment();
-               fragment.setArguments(bundle);
+            Recipe.Steps step = steps.get(position);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("step", step);
+            bundle.putInt("position", position);
+            bundle.putParcelableArrayList("stepsList", steps);
 
 
-               fragmentTransaction.replace(R.id.recipe_detail, fragment);
-               fragmentTransaction.commit();
+            if (isTablet) {
 
-           } else {
-
-
-
-               intent.putExtras(bundle);
-
-               itemView.getContext().startActivity(intent);
+                FragmentManager fragmentManager = ((RecipeStepsActivity) context).getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                RecipeDetailFragment fragment = new RecipeDetailFragment();
+                fragment.setArguments(bundle);
 
 
+                fragmentTransaction.replace(R.id.recipe_detail, fragment);
+                fragmentTransaction.commit();
 
-           }
+            } else {
 
 
+                intent.putExtras(bundle);
 
-       }
+                itemView.getContext().startActivity(intent);
 
-        public static interface ViewHolderClick {
-            public void onStepListItem(View view);
+
+            }
+
+
+        }
+
+        public interface ViewHolderClick {
+            void onStepListItem(View view);
         }
 
     }
+
     public StepsAdapter(Context context, ArrayList<Recipe.Steps> items) {
         steps = items;
         this.context = context;

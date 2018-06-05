@@ -1,8 +1,6 @@
 package com.example.roza.bakingapp.utils;
 
-/**
- * Created by hiddenpik on 05.05.2018.
- */
+
 import android.net.Uri;
 import android.util.Log;
 

@@ -1,9 +1,6 @@
 package com.example.roza.bakingapp;
 
-//import android.app.ActionBar;
-import android.app.Activity;
-import android.content.Context;
-import android.support.v7.app.ActionBar;
+
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -27,9 +24,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by hiddenpik on 08.05.2018.
- */
 
 public class StepsFragment extends Fragment {
     @BindView(R.id.ingredients_tv)
@@ -59,18 +53,14 @@ public class StepsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_steps, container, false);
         ButterKnife.bind(this, view);
 
-       // int position = getArguments().getInt("position");
-        //final Recipe recipe = getArguments().getParcelable("recipe");
-     //   Log.d("StepsFragment", ""   + (recipe != null ? recipe.getRecipeName() : null));
-
         steps = new ArrayList<>();
 
         recipes = getArguments().getParcelableArrayList("recipesList");
         position = getArguments().getInt("position");
         recipe = recipes.get(position);
-        steps =  recipe.getStepsList();
+        steps = recipe.getStepsList();
 
-        ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle(recipe.getRecipeName());
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setTitle(recipe.getRecipeName());
 
 
         previousButtonSteps.setOnClickListener(new View.OnClickListener() {
@@ -98,7 +88,7 @@ public class StepsFragment extends Fragment {
         nextButtonSteps.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if ((position < recipes.size() -1)) {
+                if ((position < recipes.size() - 1)) {
                     position += 1;
                     recipe = recipes.get(position);
 
@@ -117,7 +107,6 @@ public class StepsFragment extends Fragment {
 
             }
         });
-
 
 
         if (view.findViewById(R.id.tablet_fragment_steps) != null) {
@@ -145,36 +134,29 @@ public class StepsFragment extends Fragment {
                     Log.d("StepsFragment", "wywolane");
 
 
-                } else  {
+                } else {
 
 
-                fragmentTransaction.replace(R.id.fragment_steps_list, fragment).addToBackStack(null);
-                fragmentTransaction.commit();   }
+                    fragmentTransaction.replace(R.id.fragment_steps_list, fragment).addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
 
 
             }
         });
 
 
-       layoutManager = new LinearLayoutManager(getActivity());
-       stepsRecycleView.setLayoutManager(layoutManager);
+        layoutManager = new LinearLayoutManager(getActivity());
+        stepsRecycleView.setLayoutManager(layoutManager);
 
 
-
-
-       adapter = new StepsAdapter(getContext(), steps);
-       stepsRecycleView.setAdapter(adapter);
-       adapter.notifyDataSetChanged();
-
-
-
-
+        adapter = new StepsAdapter(getContext(), steps);
+        stepsRecycleView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
 
         return view;
     }
-
-
 
 
 }

@@ -32,9 +32,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by hiddenpik on 22.05.2018.
- */
 
 public class ConfigurationActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<ArrayList<Recipe>> {
 
@@ -47,19 +44,15 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
     Recipe recipe;
 
 
-    //ArrayAdapter<>
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_configure);
 
 
-
         ButterKnife.bind(this);
 
         getSupportLoaderManager().initLoader(0, null, this).forceLoad();
-       // getLoaderManager().initLoader(0, null, this).forceLoad();
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -69,8 +62,6 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
                     AppWidgetManager.INVALID_APPWIDGET_ID);
 
 
-            // nutellaButton.setOnClickListener(this);
-
         }
 
 
@@ -79,9 +70,8 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                Context context = ConfigurationActivity.this;
                 recipe = parsedList.get(position);
-                Log.d("configurationActivity","" + recipe);
+                Log.d("configurationActivity", "" + recipe);
 
 
                 startWidget();
@@ -97,7 +87,6 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
     */
 
 
-
     private void startWidget() {
         Context context = getApplicationContext();
 
@@ -105,10 +94,7 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
         RemoteViews views = new RemoteViews(context.getPackageName(),
                 R.layout.baking_widget);
         Intent serviceIntent = new Intent(this, BakingRemoteViewService.class);
-//        Bundle bundle = new Bundle();
-//        bundle.setClassLoader(this.getClassLoader());
-//        bundle.putParcelableArrayList("ingredients", recipe.getIngredientsList());
-//        serviceIntent.putExtras(bundle);
+
 
         Bundle b = new Bundle();
         b.putParcelableArrayList("ingredientsParcel", recipe.getIngredientsList());
@@ -119,20 +105,14 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
         views.setRemoteAdapter(R.id.widget_ingredients_lv, serviceIntent);
         appWidgetManager.updateAppWidget(appWidgetId, views);
 
-//        Bundle b = new Bundle();
-//        b.putParcelable("recipe", recipe);
 
         Intent intent = new Intent();
-//        intent.setExtrasClassLoader(Recipe.class.getClassLoader());
+
         intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
                 appWidgetId);
-//        Log.d("starting","" + recipe);
-        //intent.putExtra("recipeParcel", recipe);
+
         setResult(Activity.RESULT_OK, intent);
 
-
-//
-//        startService(serviceIntent);
 
         this.finish();
     }
@@ -142,7 +122,6 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
         Context context = ConfigurationActivity.this;
 
         return new AsyncTaskLoader<ArrayList<Recipe>>(context) {
-
 
 
             @Override
@@ -174,17 +153,15 @@ public class ConfigurationActivity extends AppCompatActivity implements LoaderMa
     public void onLoadFinished(Loader<ArrayList<Recipe>> loader, ArrayList<Recipe> data) {
         if (data != null && !data.equals("")) {
             ConfigureAdapter adapter = new ConfigureAdapter(getApplicationContext(), data);
-             configureListView.setAdapter(adapter);
-
-
+            configureListView.setAdapter(adapter);
 
 
         }
     }
 
-        @Override
-        public void onLoaderReset (Loader < ArrayList < Recipe >> loader) {
+    @Override
+    public void onLoaderReset(Loader<ArrayList<Recipe>> loader) {
 
-        }
     }
+}
 

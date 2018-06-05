@@ -4,11 +4,8 @@
     android:padding="@dimen/widget_margin">
 
 
-
-
-
     <ListView
+        android:id="@+id/widget_ingredients_lv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/widget_ingredients_lv"></ListView>
+        android:layout_height="wrap_content"></ListView>
 </RelativeLayout>

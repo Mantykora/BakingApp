@@ -30,56 +30,38 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by hiddenpik on 09.05.2018.
- */
 
 public class RecipesListFragment extends Fragment implements LoaderManager.LoaderCallbacks<ArrayList<Recipe>> {
 
-        @BindView(R.id.recipe_names_rv)
-        RecyclerView namesRecycleView;
+    @BindView(R.id.recipe_names_rv)
+    RecyclerView namesRecycleView;
 
-        private RecyclerView.LayoutManager layoutManager;
-        private RecyclerView.Adapter adapter;
-        private List<Recipe> recipesList;
+    private RecyclerView.LayoutManager layoutManager;
+    private RecyclerView.Adapter adapter;
+    private List<Recipe> recipesList;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
 
-
         View view = inflater.inflate(R.layout.fragment_recipes, container, false);
         ButterKnife.bind(this, view);
 
 
+        if (view.findViewById(R.id.tablet_fragment_recipes) != null) {
+
+            layoutManager = new GridLayoutManager(getActivity(), 4);
 
 
+        } else {
+            layoutManager = new LinearLayoutManager(getActivity());
 
 
-      if (view.findViewById(R.id.tablet_fragment_recipes) != null) {
-
-          layoutManager = new GridLayoutManager(getActivity(), 5);
-
-
-      } else {
-          layoutManager = new LinearLayoutManager(getActivity());
-
-
-      }
+        }
         namesRecycleView.setLayoutManager(layoutManager);
         recipesList = new ArrayList<>();
         adapter = new RecipeAdapter(recipesList);
-
-
-
-
-
-
-
-
-
-
 
 
         loadRecipeData();
@@ -124,14 +106,10 @@ public class RecipesListFragment extends Fragment implements LoaderManager.Loade
 
     @Override
     public void onLoadFinished(Loader<ArrayList<Recipe>> loader, ArrayList<Recipe> recipes) {
-        //movieAdapter = new MovieAdapter(MainActivity.this, movies);
         if (recipes != null && !recipes.equals("")) {
             adapter = new RecipeAdapter(recipes);
             namesRecycleView.setAdapter(adapter);
             adapter.notifyDataSetChanged();
-            // gridView.setAdapter(movieAdapter);
-            //movieAdapter.notifyDataSetChanged();
-            //Log.i("Main Activity", "gridView set");
             Log.i("MainActivity", "" + recipes);
         } else {
             Toast toast = Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_LONG);
@@ -144,27 +122,4 @@ public class RecipesListFragment extends Fragment implements LoaderManager.Loade
 
     }
 
-//    @Override
-//    public void onLoadFinished(Loader<ArrayList<Recipe>> loader, ArrayList<Recipe> recipes) {
-//
-//        //movieAdapter = new MovieAdapter(MainActivity.this, movies);
-//        if (recipes != null && !recipes.equals("")) {
-//            adapter = new RecipeAdapter(recipes);
-//            namesRecycleView.setAdapter(adapter);
-//            adapter.notifyDataSetChanged();
-//            // gridView.setAdapter(movieAdapter);
-//            //movieAdapter.notifyDataSetChanged();
-//            //Log.i("Main Activity", "gridView set");
-//            Log.i("MainActivity", "" + recipes);
-//        } else {
-//            Toast toast = Toast.makeText(getContext(), "No internet connection", Toast.LENGTH_LONG);
-//            toast.show();
-//        }
-//
-//    }
-//
-//    @Override
-//    public void onLoaderReset(Loader<ArrayList<Recipe>> loader) {
-//
-//    }
 }

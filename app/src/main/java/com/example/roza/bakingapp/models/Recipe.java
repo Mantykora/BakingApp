@@ -20,9 +20,7 @@ public class Recipe implements Parcelable {
     private ArrayList<Ingredients> ingredientsList;
 
 
-
     private ArrayList<Steps> stepsList;
-
 
 
     public Recipe() {

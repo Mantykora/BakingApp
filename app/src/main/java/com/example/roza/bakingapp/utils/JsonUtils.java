@@ -42,7 +42,6 @@ public class JsonUtils {
 
         for (int i = 0; i < resultsArray.length(); i++) {
 
-            //zapisać wszystko w zmiennych jednak i potem poustawiać do
 
             Recipe recipe = new Recipe();
 
@@ -57,7 +56,7 @@ public class JsonUtils {
             ArrayList<Recipe.Ingredients> ingredientsArrayList = new ArrayList<>();
 
 
-            for (int j = 0; j < ingredientsArray.length(); j++ ) {
+            for (int j = 0; j < ingredientsArray.length(); j++) {
                 Recipe.Ingredients ingredients = new Recipe.Ingredients();
 
                 JSONObject ingredientObject = ingredientsArray.getJSONObject(j);
@@ -67,7 +66,6 @@ public class JsonUtils {
                 ingredients.setIngredient(ingredientObject.getString(INGREDIENT));
 
                 ingredientsArrayList.add(ingredients);
-
 
 
                 Log.d("ingredients", ingredientsArrayList.toString());
@@ -104,9 +102,7 @@ public class JsonUtils {
 
             recipes.add(recipe);
             Log.d("Json", "" + recipe.getRecipeName());
-//            Log.d("Json", "" + recipe.getStepVideoUrl());
-//            Log.d("Json", "" + recipe.getIngredient());
-            Log.d("json","" + recipes);
+            Log.d("json", "" + recipes);
 
         }
 

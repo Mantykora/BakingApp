@@ -18,9 +18,10 @@ import android.widget.Toast;
 
 import com.example.roza.bakingapp.MainActivity;
 import com.example.roza.bakingapp.R;
+
 import android.app.Fragment;
 
-  import com.example.roza.bakingapp.RecipeStepsActivity;
+import com.example.roza.bakingapp.RecipeStepsActivity;
 import com.example.roza.bakingapp.StepsFragment;
 import com.example.roza.bakingapp.models.Recipe;
 import com.squareup.picasso.Picasso;
@@ -29,10 +30,6 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-
-/**
- * Created by hiddenpik on 07.05.2018.
- */
 
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder> {
 
@@ -56,17 +53,11 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder holder, final int position) {
 
         holder.reciperNameTv.setTag(position);
-       // holder.reciperNameIv.setTag(position);
+
 
         Recipe recipe = recipes.get(position);
 
         holder.reciperNameTv.setText(recipe.getRecipeName());
-//
-//        if (!recipe.getRecipeImage().isEmpty()) {
-//            Picasso.get().load(recipe.getRecipeImage()).into(holder.reciperNameIv);
-//
-//        }
-
 
     }
 
@@ -82,7 +73,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public final TextView reciperNameTv;
-       // public final ImageView reciperNameIv;
         public ViewHolder.ViewHolderClick mListener;
 
         public ViewHolder(View itemView, ViewHolderClick viewHolderClick) {
@@ -93,21 +83,16 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             reciperNameTv = itemView.findViewById(R.id.recipe_name_textView);
             reciperNameTv.setOnClickListener(this);
 
-           // reciperNameIv = itemView.findViewById(R.id.recipe_name_imageView);
         }
 
-        // zrobic cos z tym contextem
-        private Context context;
 
         @Override
         public void onClick(View view) {
-            context = view.getContext();
             int position = (int) view.getTag();
 
 
             mListener.onRecipeListItem(view);
             Intent intent = new Intent(itemView.getContext(), RecipeStepsActivity.class);
-            //intent.putExtra("position", position);
             Recipe recipe = recipes.get(position);
             Bundle bundle = new Bundle();
             bundle.putParcelable("recipe", recipe);
@@ -115,15 +100,6 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             bundle.putParcelableArrayList("recipesList", recipes);
             intent.putExtras(bundle);
             itemView.getContext().startActivity(intent);
-//
-//            FragmentManager fragmentManager = ((AppCompatActivity) context).getSupportFragmentManager();
-//
-//            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//
-//            StepsFragment fragment = new StepsFragment();
-//            fragmentTransaction.replace(R.id.fragment_name_list, fragment);
-//            fragmentTransaction.addToBackStack(null);
-//            fragmentTransaction.commit();
 
 
         }
@@ -131,8 +107,8 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
         /*
         OnClick in RecyclerView from: https://stackoverflow.com/a/24933117/8131467
          */
-        public static interface ViewHolderClick {
-            public void onRecipeListItem(View view);
+        public interface ViewHolderClick {
+            void onRecipeListItem(View view);
         }
 
     }

@@ -12,9 +12,6 @@ import com.example.roza.bakingapp.models.Recipe;
 
 import java.util.ArrayList;
 
-/**
- * Created by hiddenpik on 15.05.2018.
- */
 
 public class RecipeDetailActivity extends AppCompatActivity {
     @Override

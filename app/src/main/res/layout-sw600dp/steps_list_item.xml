@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tablet_steps_list_item"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:id="@+id/tablet_steps_list_item">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/steps_tv"
