@@ -31,12 +31,13 @@ public class RecipeDetailActivity extends AppCompatActivity {
 
         Log.d("RecipeDetailActivity", "" + step.getStepDescription());
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        RecipeDetailFragment fragment = new RecipeDetailFragment();
-        fragment.setArguments(bundle);
-        fragmentTransaction.add(R.id.recipe_detail, fragment);
-        fragmentTransaction.commit();
-
+        if (savedInstanceState == null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            RecipeDetailFragment fragment = new RecipeDetailFragment();
+            fragment.setArguments(bundle);
+            fragmentTransaction.add(R.id.recipe_detail, fragment);
+            fragmentTransaction.commit();
+        }
     }
 }
