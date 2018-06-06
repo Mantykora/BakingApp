@@ -57,16 +57,30 @@ public class RecipeDetailFragment extends Fragment {
     private DefaultTrackSelector trackSelector;
 
 
+
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
-        updateTrackSelectorParameters();
-        updateStartPosition();
+//        updateTrackSelectorParameters();
+//        updateStartPosition();
         outState.putBoolean(KEY_AUTO_PLAY, startAutoPlay);
         outState.putInt(KEY_WINDOW, startWindow);
         outState.putLong(KEY_POSITION, startPosition);
+        Log.d("RecipeDetail", "OnSaveInstanceState");
         super.onSaveInstanceState(outState);
     }
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        Log.d(TAG, "restoringInstanceState");
+        if (savedInstanceState != null) {
+            startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
 
+        startWindow = savedInstanceState.getInt(KEY_WINDOW);
+        startPosition = savedInstanceState.getLong(KEY_POSITION);
+        initializePlayer();
+    }
+        super.onViewStateRestored(savedInstanceState);
+    }
 
     @BindView(R.id.player_view)
     PlayerView playerView;
@@ -104,14 +118,17 @@ public class RecipeDetailFragment extends Fragment {
         step = steps.get(position);
 
         Log.d("RecipeDetailFragment", step.getStepDescription());
+//
+//        if (savedInstanceState != null) {
+//            Log.d(TAG, "restoringInstanceState");
+//            startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
+//            startWindow = savedInstanceState.getInt(KEY_WINDOW);
+//            startPosition = savedInstanceState.getLong(KEY_POSITION);
+//           //initializePlayer();
+//
+//        }
+        initializePlayer();
 
-        if (savedInstanceState != null) {
-            Log.d(TAG, "restoringInstanceState");
-            startAutoPlay = savedInstanceState.getBoolean(KEY_AUTO_PLAY);
-            startWindow = savedInstanceState.getInt(KEY_WINDOW);
-            startPosition = savedInstanceState.getLong(KEY_POSITION);
-
-        }
 
         descriptionTv.setText(step.getStepDescription());
 
@@ -161,6 +178,7 @@ public class RecipeDetailFragment extends Fragment {
                 }
             }
         });
+
         return view;
     }
 
@@ -227,17 +245,22 @@ public class RecipeDetailFragment extends Fragment {
             //trackSelector.setParameters(trackSelectorParameters);
             player = ExoPlayerFactory.newSimpleInstance(new DefaultRenderersFactory(getContext()), trackSelector, new DefaultLoadControl());
 
-            playerView.setPlayer(player);
+            //playerView.setPlayer(player);
 
-            player.setPlayWhenReady(playWhenReady);
-            player.seekTo(currentWindow, playbackPosition);
+//            player.setPlayWhenReady(playWhenReady);
+//           // player.seekTo(currentWindow, playbackPosition);
+//            player.seekTo(startWindow, startPosition);
 
 
             String stepUrl = step.getStepVideoUrl();
             if (!stepUrl.isEmpty()) {
+
                 Uri uri = Uri.parse(step.getStepVideoUrl());
                 MediaSource mediaSource = buildMediaSource(uri);
                 player.prepare(mediaSource, true, false);
+                player.setPlayWhenReady(startAutoPlay);
+                player.seekTo(startWindow, playbackPosition);
+                playerView.setPlayer(player);
 
 
                 Log.d(TAG, "player initialized");
@@ -268,9 +291,9 @@ public class RecipeDetailFragment extends Fragment {
     private void releasePlayer() {
         if (player != null) {
             playbackPosition = player.getCurrentPosition();
-            currentWindow = player.getCurrentWindowIndex();
+            startWindow = player.getCurrentWindowIndex();
             playWhenReady = player.getPlayWhenReady();
-            player.stop();
+           // player.stop();
             player.release();
             player = null;
             Log.d(TAG, "player released");
